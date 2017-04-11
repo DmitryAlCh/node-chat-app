@@ -14,16 +14,26 @@ var server = http.createServer(app);
 var io = socketIO(server);
 
 app.use(express.static(publicPath));
-
+var chatMessage = {
+  from: 'Andrew Df',
+  text: 'some random chat message',
+  createdAt: 11042017
+};
 io.on('connection', (socket) => {
   console.log('New user connected');
 
   socket.on('disconnect', () => {
     console.log('User disconnected from server');
   });
+
+  socket.on('createMessage', (clientMessage) =>{
+    console.log('createMessage', clientMessage);
+  });
+
+  socket.emit('newMessage', chatMessage);
 });
 
-server.listen(port, ()=>{
+server.listen(port, () => {
   console.log(`Server is Up and running on ${port}`);
 });
 
