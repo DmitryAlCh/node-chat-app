@@ -28,9 +28,14 @@ io.on('connection', (socket) => {
 
   socket.on('createMessage', (clientMessage) =>{
     console.log('createMessage', clientMessage);
+    io.emit('newMessage',{
+      from: clientMessage.from,
+      text: clientMessage.text,
+      createdAt: new Date().getTime()
+    });
   });
 
-  socket.emit('newMessage', chatMessage);
+  
 });
 
 server.listen(port, () => {

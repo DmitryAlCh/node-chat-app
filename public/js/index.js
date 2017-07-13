@@ -6,7 +6,7 @@ var clientMessage = {
 };
 socket.on('connect',function() {
   console.log('Conneced to server');
-  socket.emit('createMessage',clientMessage);
+  
 
 });
 socket.on('disconnect', function() {
