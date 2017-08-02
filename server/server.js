@@ -1,6 +1,7 @@
 //Loaded node modules
 const express = require('express');
 const socketIO = require('socket.io');
+const {generateMessage}= require('./utils/message.js');
 
 // built-in modules
 const path = require('path');
@@ -21,17 +22,9 @@ var chatMessage = {
 };
 io.on('connection', (socket) => {
   console.log('New user connected');
-  socket.broadcast.emit('newMessage',{
-    from: 'Admin',
-    text: 'New User connected',
-    createdAt: new Date().getTime()
-  });
+  socket.broadcast.emit('newMessage',generateMessage('Admin', 'New user joins the chat'));
 
-  socket.emit('newMessage',{
-    from: 'Admin',
-    text: 'You are welcome to the chat',
-    createdAt: new Date().getTime()
-  });
+  socket.emit('newMessage',generateMessage('Admin', 'Welcome to the chat app'));
 
   socket.on('disconnect', () => {
     console.log('User disconnected from server');
@@ -39,11 +32,7 @@ io.on('connection', (socket) => {
 
   socket.on('createMessage', (clientMessage) =>{
     console.log('createMessage', clientMessage);
-    io.emit('newMessage',{
-      from: clientMessage.from,
-      text: clientMessage.text,
-      createdAt: new Date().getTime()
-    });
+    io.emit('newMessage', generateMessage(clientMessage.from, clientMessage.text));
   });
 
 
