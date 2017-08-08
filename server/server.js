@@ -30,9 +30,10 @@ io.on('connection', (socket) => {
     console.log('User disconnected from server');
   });
 
-  socket.on('createMessage', (clientMessage) =>{
+  socket.on('createMessage', (clientMessage, callback) =>{
     console.log('createMessage', clientMessage);
     io.emit('newMessage', generateMessage(clientMessage.from, clientMessage.text));
+    callback('This is from server');
   });
 
 
