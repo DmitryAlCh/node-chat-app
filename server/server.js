@@ -1,7 +1,8 @@
 //Loaded node modules
 const express = require('express');
 const socketIO = require('socket.io');
-const {generateMessage}= require('./utils/message.js');
+const {generateMessage, generateLocationMessage}= require('./utils/message.js');
+
 
 // built-in modules
 const path = require('path');
@@ -34,6 +35,10 @@ io.on('connection', (socket) => {
     console.log('createMessage', clientMessage);
     io.emit('newMessage', generateMessage(clientMessage.from, clientMessage.text));
     callback('This is from server');
+  });
+
+  socket.on('createLocationMessage', (coords) => {
+    io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude,coords.longitude));
   });
 
 
