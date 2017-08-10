@@ -32,9 +32,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createMessage', (clientMessage, callback) =>{
-    console.log('createMessage', clientMessage);
+    // console.log('createMessage', clientMessage);
     io.emit('newMessage', generateMessage(clientMessage.from, clientMessage.text));
-    callback('This is from server');
+    callback();
   });
 
   socket.on('createLocationMessage', (coords) => {
