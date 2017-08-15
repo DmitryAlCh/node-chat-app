@@ -2,7 +2,7 @@
 const express = require('express');
 const socketIO = require('socket.io');
 const {generateMessage, generateLocationMessage}= require('./utils/message.js');
-
+const {isRealString} = require('./utils/validation.js');
 
 // built-in modules
 const path = require('path');
@@ -30,6 +30,13 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('User disconnected from server');
   });
+
+  socket.on('join', (params, callback) => {
+    if (!isRealString(params.name) || !isRealString(params.room)){
+      callback('Name and room are required');
+    }
+    callback();
+  })
 
   socket.on('createMessage', (clientMessage, callback) =>{
     // console.log('createMessage', clientMessage);
