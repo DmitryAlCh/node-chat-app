@@ -22,11 +22,7 @@ var chatMessage = {
   createdAt: 11042017
 };
 io.on('connection', (socket) => {
-  console.log('New user connected');
-  socket.broadcast.emit('newMessage',generateMessage('Admin', 'New user joins the chat'));
-
-  socket.emit('newMessage',generateMessage('Admin', 'Welcome to the chat app'));
-
+  // console.log('New user connected');
   socket.on('disconnect', () => {
     console.log('User disconnected from server');
   });
@@ -35,6 +31,13 @@ io.on('connection', (socket) => {
     if (!isRealString(params.name) || !isRealString(params.room)){
       callback('Name and room are required');
     }
+
+    socket.join(params.room);
+    // io.emit -> io.to(roomName).emit
+    // socket.broadcast -> socket.broadcast.to(roomName).emit
+    // socket.emit
+    socket.broadcast.to(params.room).emit('newMessage',generateMessage('Admin', `${params.name} user joins the chat`));
+    socket.emit('newMessage',generateMessage('Admin', 'Welcome to the chat app'));
     callback();
   })
 
