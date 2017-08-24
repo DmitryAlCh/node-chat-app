@@ -46,12 +46,19 @@ io.on('connection', (socket) => {
 
   socket.on('createMessage', (clientMessage, callback) =>{
     // console.log('createMessage', clientMessage);
-    io.emit('newMessage', generateMessage(clientMessage.from, clientMessage.text));
+    var user = users.getUser(socket.id);
+    if (user && isRealString(clientMessage.text)){
+      io.to(user.room).emit('newMessage', generateMessage(user.name, clientMessage.text));
+    }
+
     callback();
   });
 
   socket.on('createLocationMessage', (coords) => {
-    io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude,coords.longitude));
+    var user = users.getUser(socket.id);
+    if (user){
+      io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude,coords.longitude));
+  }
   });
   socket.on('disconnect', () => {
     console.log('User disconnected from server');

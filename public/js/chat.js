@@ -63,12 +63,12 @@ socket.on('newMessage', function(message) {
   // jQuery('#messages').append(li)
 });
 
-socket.emit('createMessage', {
-  from:'Frank',
-  text:'Hi'
-}, function(data){
-  console.log('Got it', data);
-});
+// socket.emit('createMessage', {
+//   from:'Frank',
+//   text:'Hi'
+// }, function(data){
+//   console.log('Got it', data);
+// });
 
 socket.on('newLocationMessage', function(message){
   var formattedTime = moment(message.createdAt).format('h:mm a');
@@ -94,7 +94,6 @@ jQuery('#message_form').on('submit',function(e){
   var messageTextBox=jQuery('[name=message]');
 
   socket.emit('createMessage',{
-    from: 'User',
     text: messageTextBox.val()
   }, function() {
     messageTextBox.val('')
